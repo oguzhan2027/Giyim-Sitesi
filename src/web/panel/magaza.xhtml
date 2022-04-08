@@ -1,0 +1,59 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+    <h:head>
+
+        <title>magaza</title>
+    </h:head>
+    <h:body>
+        <h:form>
+            <h:commandButton action="/index" value="Home"/>         
+        </h:form>
+        <hr></hr>
+        <h3>Magaza Listesi</h3>
+        <h:form>
+
+            YÖNETİCİ:
+            <h:selectOneMenu value="#{magazaBean.entity.yonetici}" converter="yoneticiConverter">
+                <f:selectItems value="#{yoneticiBean.list}" var="c" itemValue="#{c}" itemLabel="#{c.adSoyad}"/>
+            </h:selectOneMenu>
+            <br/>
+             Ad:<h:inputText value="#{magazaBean.entity.ad}"/><br/>
+            Adres<h:inputTextarea rows="5" cols="50" value="#{magazaBean.entity.adres}"/><br/>
+            <h:commandButton rendered="#{magazaBean.entity.id==0}" action="#{magazaBean.create()}" value="Create"/>
+            <h:commandButton rendered="#{magazaBean.entity.id!=0}" action="#{magazaBean.update()}" value="Update"/>
+            <h:commandButton rendered="#{magazaBean.entity.id!=0}" action="#{magazaBean.clear()}" value="Clear"/>
+        </h:form>
+        <hr />
+        <h:form>
+            <h:dataTable border="1" value="#{magazaBean.list}" var="entity">
+                <h:column>
+                    <f:facet name="header">ID</f:facet>
+                        #{entity.id}
+                </h:column>
+                <h:column>
+                    <f:facet name="header">YONETİCİ</f:facet>
+                        #{entity.yonetici.adSoyad}
+                </h:column>
+                <h:column>
+                    <f:facet name="header">AD</f:facet>
+                        #{entity.ad}
+                </h:column>
+                <h:column>
+                    <f:facet name="header">ADRES</f:facet>
+                        #{entity.adres}
+                </h:column>
+
+                <h:column>
+                    <f:facet name="header">DÜZENLEME</f:facet>
+                    <h:commandButton action="#{magazaBean.delete(entity)}" value="SİL"/>
+                    <h:commandButton action="#{magazaBean.setEntity(entity)}" value="Güncelle"/>
+                </h:column>
+
+            </h:dataTable>
+        </h:form>
+    </h:body>
+</html>
