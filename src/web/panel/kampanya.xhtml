@@ -1,0 +1,52 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+    <h:head>
+        <title>Kampanya</title>
+    </h:head>
+    <h:body>
+        <h:form>
+            <h:commandButton action="/index" value="Home"/>         
+        </h:form>
+        <hr></hr>
+        <h3>Kampanya Listesi</h3>
+        <h:form>
+            isim:<h:inputText value="#{kampanyaBean.entity.isim}"/><br/>
+            Baslama süresi:<h:inputText value="#{kampanyaBean.entity.basSure}"/><br/>
+            Bitiş süresi:<h:inputText value="#{kampanyaBean.entity.bitSure}"/><br/>
+            <h:commandButton rendered="#{kampanyaBean.entity.id==0}" action="#{kampanyaBean.create()}" value="Create"/>
+            <h:commandButton rendered="#{kampanyaBean.entity.id!=0}" action="#{kampanyaBean.update()}" value="Update"/>
+            <h:commandButton rendered="#{kampanyaBean.entity.id!=0}" action="#{kampanyaBean.clear()}" value="Clear"/>
+        </h:form>
+        <hr />
+        <h:form>
+            <h:dataTable border="1" value="#{kampanyaBean.list}" var="entity">
+                <h:column>
+                    <f:facet name="header">ID</f:facet>
+                        #{entity.id}
+                </h:column>
+
+                <h:column>
+                    <f:facet name="header">ISIM</f:facet>
+                        #{entity.isim}
+                </h:column>
+                <h:column>
+                    <f:facet name="header">BASLAMASURESİ</f:facet>
+                        #{entity.basSure}
+                </h:column>
+                <h:column>
+                    <f:facet name="header">BITISSURESİ</f:facet>
+                        #{entity.bitSure}
+                </h:column>
+                <h:column>
+                    <f:facet name="header">DÜZENLEMELER</f:facet>
+                    <h:commandButton action="#{kampanyaBean.delete(entity)}" value="SİL"/>
+                    <h:commandButton action="#{kampanyaBean.setEntity(entity)}" value="Güncelle"/>
+                </h:column>
+
+            </h:dataTable>
+        </h:form>
+    </h:body>
+</html>
