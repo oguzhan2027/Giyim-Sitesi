@@ -1,0 +1,43 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+    <h:head>
+        <title>Yönetici</title>
+    </h:head>
+    <h:body>
+        <h:form>
+            <h:commandButton action="/index" value="Home"/>         
+        </h:form>
+        <hr></hr>
+        <h3>Stok Listesi</h3>
+        <h:form>
+            Adet:<h:inputText value="#{stokBean.entity.adet}"/><br/>
+            <h:commandButton rendered="#{stokBean.entity.id==0}" action="#{stokBean.create()}" value="Create"/>
+            <h:commandButton rendered="#{stokBean.entity.id!=0}" action="#{stokBean.update()}" value="Update"/>
+            <h:commandButton rendered="#{stokBean.entity.id!=0}" action="#{stokBean.clear()}" value="Clear"/>
+        </h:form>
+        <hr />
+        <h:form>
+            <h:dataTable border="1" value="#{stokBean.list}" var="entity">
+                <h:column>
+                    <f:facet name="header">ID</f:facet>
+                        #{entity.id}
+                </h:column>
+
+                <h:column>
+                    <f:facet name="header">ADET</f:facet>
+                        #{entity.adet}
+                </h:column>
+                
+                <h:column>
+                    <f:facet name="header">DÜZENLEMELER</f:facet>
+                    <h:commandButton action="#{stokBean.delete(entity)}" value="SİL"/>
+                    <h:commandButton action="#{stokBean.setEntity(entity)}" value="Güncelle"/>
+                </h:column>
+
+            </h:dataTable>
+        </h:form>
+    </h:body>
+</html>
