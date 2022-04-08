@@ -1,0 +1,75 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+    <h:head>
+
+        <title>Urunler</title>
+    </h:head>
+    <h:body>
+        <h:form>
+            <h:commandButton action="/index" value="Home"/>         
+        </h:form>
+        <hr></hr>
+        <h3>Urun Listesi</h3>
+        <h:form>
+            Kategoriler
+            <h:selectOneMenu value="#{urunlerBean.entity.kategori}" converter="kategoriConverter">
+                <f:selectItems value="#{kategoriBean.list}" var="k" itemValue="#{k}" itemLabel="#{k.kategoriAd}"/>
+            </h:selectOneMenu>
+            Stok
+            <h:selectOneMenu value="#{urunlerBean.entity.stok}" converter="stokConverter">
+                <f:selectItems value="#{stokBean.list}" var="s" itemValue="#{s}" itemLabel="#{s.adet}"/>
+            </h:selectOneMenu>
+            MusteriHizmet
+            <h:selectOneMenu value="#{urunlerBean.entity.musteriHizmet}" converter="musteriHizmetConverter">
+                <f:selectItems value="#{musteriHizmetBean.list}" var="m" itemValue="#{m}" itemLabel="#{m.telefon}"/>
+            </h:selectOneMenu>
+            <br/>
+            Ad:<h:inputText value="#{urunlerBean.entity.ad}"/><br/>
+            Fiyat:<h:inputText value="#{urunlerBean.entity.fiyat}"/><br/>
+
+            <h:commandButton rendered="#{urunlerBean.entity.id==0}" action="#{urunlerBean.create()}" value="Create"/>
+            <h:commandButton rendered="#{urunlerBean.entity.id!=0}" action="#{urunlerBean.update()}" value="Update"/>
+            <h:commandButton rendered="#{urunlerBean.entity.id!=0}" action="#{urunlerBean.clear()}" value="Clear"/>
+        </h:form>
+        <hr />
+        <h:form>
+            <h:dataTable border="1" value="#{urunlerBean.list}" var="entity">
+                <h:column>
+                    <f:facet name="header">ID</f:facet>
+                        #{entity.id}
+                </h:column>
+                <h:column>
+                    <f:facet name="header">KATEGORİ</f:facet>
+                        #{entity.kategori.kategoriAd}
+                </h:column>
+                <h:column>
+                    <f:facet name="header">AD</f:facet>
+                        #{entity.ad}
+                </h:column>
+                <h:column>
+                    <f:facet name="header">FİYAT</f:facet>
+                        #{entity.fiyat}
+                </h:column>
+                <h:column>
+                    <f:facet name="header">STOK</f:facet>
+                        #{entity.stok.adet}
+                </h:column>
+                <h:column>
+                    <f:facet name="header">MusteriHizmetleri</f:facet>
+                        #{entity.musteriHizmet.telefon}
+                </h:column>
+
+                <h:column>
+                    <f:facet name="header">DÜZENLEME</f:facet>
+                    <h:commandButton action="#{urunlerBean.delete(entity)}" value="SİL"/>
+                    <h:commandButton action="#{urunlerBean.setEntity(entity)}" value="Güncelle"/>
+                </h:column>
+
+            </h:dataTable>
+        </h:form>
+    </h:body>
+</html>
