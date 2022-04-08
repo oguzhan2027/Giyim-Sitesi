@@ -1,5 +1,6 @@
 package entity;
 
+
 public class Yonetici {
 
     private int id;
