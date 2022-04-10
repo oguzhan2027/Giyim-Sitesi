@@ -80,8 +80,8 @@ create table siparis_verme(
 );
 create table faydalanma(
 	id serial primary key,
-	urunler_id int,
-	kampanyalar_id int,
-	constraint urunler_fk foreign key (urunler_id) references urunler(id),
+	uyeler_id int,
+	kampanya_id int,
+	constraint urunler_fk foreign key (uyeler_id) references uyeler(id),
     constraint kampanya_fk foreign key (kampanya_id) references kampanya(id)
 );
