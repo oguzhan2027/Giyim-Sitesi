@@ -1,35 +1,53 @@
 <?xml version='1.0' encoding='UTF-8' ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:h="http://xmlns.jcp.org/jsf/html"
-      xmlns:f="http://xmlns.jcp.org/jsf/core">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:f="http://xmlns.jcp.org/jsf/core"
+                xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                template="/template.xhtml">
 
-    <h:head>
+    <ui:define name="content">
 
-        <title>magaza</title>
-    </h:head>
-    <h:body>
-        <h:form>
-            <h:commandButton action="/index" value="Home"/>         
-        </h:form>
-        <hr></hr>
-        <h3>Magaza Listesi</h3>
-        <h:form>
+        <h:form id="magaza-form">
 
-            YÖNETİCİ:
-            <h:selectOneMenu value="#{magazaBean.entity.yonetici}" converter="yoneticiConverter">
-                <f:selectItems value="#{yoneticiBean.list}" var="c" itemValue="#{c}" itemLabel="#{c.adSoyad}"/>
-            </h:selectOneMenu>
+            <h:commandButton action="/private" value="geri"/> <br/><br/>
+            <div class="container mb-3">
+                <label class="form-label">MAĞAZA</label><br/><br/><br/>
+                <label class="form-label">Yöneticiler</label>
+                <h:selectOneMenu styleClass="form-select" value="#{magazaBean.entity.yonetici}" converter="yoneticiConverter">
+                    <f:selectItems value="#{yoneticiBean.list}" var="c" itemValue="#{c}" itemLabel="#{c.adSoyad}"/>
+                </h:selectOneMenu>
+            </div>
             <br/>
-             Ad:<h:inputText value="#{magazaBean.entity.ad}"/><br/>
-            Adres<h:inputTextarea rows="5" cols="50" value="#{magazaBean.entity.adres}"/><br/>
-            <h:commandButton rendered="#{magazaBean.entity.id==0}" action="#{magazaBean.create()}" value="Create"/>
-            <h:commandButton rendered="#{magazaBean.entity.id!=0}" action="#{magazaBean.update()}" value="Update"/>
-            <h:commandButton rendered="#{magazaBean.entity.id!=0}" action="#{magazaBean.clear()}" value="Clear"/>
+            <div class="container mb-3">
+                <label class="form-label">MAĞAZA ADI</label> 
+                <h:inputText  styleClass="form-control" value="#{magazaBean.entity.ad}"/><br/>
+            </div>
+            <div class="container mb-3">
+                <label class="form-label">MAĞAZA ADRESİ</label> 
+                <h:inputTextarea styleClass="form-control" rows="5" cols="50" value="#{magazaBean.entity.adres}"/><br/>
+            </div>
+            <div class="container mb-3">
+                <h:commandButton styleClass="btn btn-success" rendered="#{magazaBean.entity.id==0}" action="#{magazaBean.create()}" value="Create">
+                    <f:ajax execute="magaza-form" render="magaza-form magaza-table"/>
+                </h:commandButton>
+                <h:commandButton styleClass="btn btn-primary" rendered="#{magazaBean.entity.id!=0}" action="#{magazaBean.update()}" value="Update">
+                    <f:ajax execute="magaza-form" render="magaza-form magaza-table"/>
+                </h:commandButton>
+                <h:commandButton styleClass="btn btn-secondary" rendered="#{magazaBean.entity.id!=0}" action="#{magazaBean.clear()}" value="Clear">
+                    <f:ajax execute="@this" render="magaza-form "/>
+                </h:commandButton>
+            </div>
         </h:form>
         <hr />
-        <h:form>
-            <h:dataTable border="1" value="#{magazaBean.list}" var="entity">
+        <h:form id="magaza-table">
+              <pre>Page #{magazaBean.page} of #{magazaBean.pageCount}</pre>
+            <div class="btn-group">
+                <h:commandButton action="#{magazaBean.previous()}" value="Previous"/>
+                <h:commandButton action="#{magazaBean.next()}" value="Next"/><br/><br/>
+
+            </div>
+            <h:dataTable styleClass="table table-striped table-hover" value="#{magazaBean.list}" var="entity">
                 <h:column>
                     <f:facet name="header">ID</f:facet>
                         #{entity.id}
@@ -49,11 +67,15 @@
 
                 <h:column>
                     <f:facet name="header">DÜZENLEME</f:facet>
-                    <h:commandButton action="#{magazaBean.delete(entity)}" value="SİL"/>
-                    <h:commandButton action="#{magazaBean.setEntity(entity)}" value="Güncelle"/>
+                    <h:commandButton styleClass="btn btn-danger btn-sm" action="#{magazaBean.delete(entity)}" value="SİL">
+                        <f:ajax execute="magaza-form" render="magaza-form magaza-table"/>
+                    </h:commandButton>
+                    <h:commandButton styleClass="btn btn-primary btn-sm" action="#{magazaBean.setEntity(entity)}" value="Güncelle">
+                        <f:ajax execute="magaza-form" render="magaza-form magaza-table"/>
+                    </h:commandButton>
                 </h:column>
 
             </h:dataTable>
         </h:form>
-    </h:body>
-</html>
+    </ui:define>
+</ui:composition>
