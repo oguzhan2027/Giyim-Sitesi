@@ -1,7 +1,3 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package dao;
 
 import entity.Yonetici;
@@ -57,17 +53,34 @@ public class YoneticiDAO extends DBConnection {
             Statement st = this.getConnection().createStatement();
             String query = "delete from yonetici where id=" + c.getId();
             st.executeUpdate(query);
+
         } catch (Exception ex) {
             System.out.println(ex.getMessage());
 
         }
     }
 
-    public List<Yonetici> getList() {
-        List<Yonetici> list = new ArrayList<>();
+    public int count() {
+        int count = 0;
         try {
             Statement st = this.getConnection().createStatement();
-            String query = "select * from yonetici";
+            String query = "select count(id) as yonetici_count from yonetici";
+            ResultSet rs = st.executeQuery(query);
+            rs.next();
+            count = rs.getInt("yonetici_count");
+        } catch (Exception ex) {
+            System.out.println(ex.getMessage());
+
+        }
+        return count;
+    }
+
+    public List<Yonetici> getList(int page, int pageSize) {
+        List<Yonetici> list = new ArrayList<>();
+        int start = (page - 1) * pageSize;
+        try {
+            Statement st = this.getConnection().createStatement();
+            String query = "select * from yonetici order by id asc limit "+pageSize+" offset "+start;
             ResultSet rs = st.executeQuery(query);
             while (rs.next()) {
                 list.add(new Yonetici(rs.getInt("id"), rs.getString("ad_soyad")));
