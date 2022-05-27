@@ -10,25 +10,37 @@
     </h:head>
     <h:body>
         <h:form>
-            <h:commandButton action="/index" value="Home"/>         
+            <h:commandButton action="/private" value="geri"/>  
         </h:form>
         <hr></hr>
         <h3>Musteri Hizmetleri Listesi</h3>
-        <h:form>
+        <h:form id="mushiz-form">
 
-           Magaza
+            Magaza
             <h:selectOneMenu value="#{musteriHizmetBean.entity.magaza}" converter="magazaConverter">
                 <f:selectItems value="#{magazaBean.list}" var="c" itemValue="#{c}" itemLabel="#{c.ad}"/>
             </h:selectOneMenu>
             <br/>
             AdSoyad:<h:inputText value="#{musteriHizmetBean.entity.adSoyad}"/><br/>
             Telefon<h:inputText value="#{musteriHizmetBean.entity.telefon}"/><br/>
-            <h:commandButton rendered="#{musteriHizmetBean.entity.id==0}" action="#{musteriHizmetBean.create()}" value="Create"/>
-            <h:commandButton rendered="#{musteriHizmetBean.entity.id!=0}" action="#{musteriHizmetBean.update()}" value="Update"/>
-            <h:commandButton rendered="#{musteriHizmetBean.entity.id!=0}" action="#{musteriHizmetBean.clear()}" value="Clear"/>
+            <h:commandButton rendered="#{musteriHizmetBean.entity.id==0}" action="#{musteriHizmetBean.create()}" value="Create">
+                <f:ajax execute="mushiz-form" render="mushiz-form mushiz-table"/>
+            </h:commandButton>
+            <h:commandButton rendered="#{musteriHizmetBean.entity.id!=0}" action="#{musteriHizmetBean.update()}" value="Update">
+                <f:ajax execute="mushiz-form" render="mushiz-form mushiz-table"/>
+            </h:commandButton>
+            <h:commandButton rendered="#{musteriHizmetBean.entity.id!=0}" action="#{musteriHizmetBean.clear()}" value="Clear">
+                <f:ajax execute="@this" render="mushiz-form"/>
+            </h:commandButton>
         </h:form>
         <hr />
-        <h:form>
+        <h:form id="mushiz-table">
+              <pre>Page #{musteriHizmetBean.page} of #{musteriHizmetBean.pageCount}</pre>
+            <div class="btn-group">
+                <h:commandButton action="#{musteriHizmetBean.previous()}" value="Previous"/>
+                <h:commandButton action="#{musteriHizmetBean.next()}" value="Next"/><br/><br/>
+
+            </div>
             <h:dataTable border="1" value="#{musteriHizmetBean.list}" var="entity">
                 <h:column>
                     <f:facet name="header">ID</f:facet>
@@ -49,8 +61,12 @@
 
                 <h:column>
                     <f:facet name="header">DÜZENLEME</f:facet>
-                    <h:commandButton action="#{musteriHizmetBean.delete(entity)}" value="SİL"/>
-                    <h:commandButton action="#{musteriHizmetBean.setEntity(entity)}" value="Güncelle"/>
+                    <h:commandButton action="#{musteriHizmetBean.delete(entity)}" value="SİL">
+                        <f:ajax execute="mushiz-form" render="mushiz-form mushiz-table"/>
+                    </h:commandButton>
+                    <h:commandButton action="#{musteriHizmetBean.setEntity(entity)}" value="Güncelle">
+                        <f:ajax execute="mushiz-form" render="mushiz-form mushiz-table"/>
+                    </h:commandButton>
                 </h:column>
 
             </h:dataTable>

@@ -1,7 +1,4 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
+
 package dao;
 
 
@@ -14,6 +11,24 @@ import util.DBConnection;
 
 
 public class KampanyaDAO extends DBConnection{
+    
+     public Kampanya findByID(int id) {
+        Kampanya k = null;
+
+        try {
+            Statement st = this.getConnection().createStatement();
+            String query = "select * from kampanya where id=" + id;
+            ResultSet rs = st.executeQuery(query);
+            while (rs.next()) {
+                k = new Kampanya(rs.getInt("id"), rs.getString("isim"));
+            }
+        } catch (Exception ex) {
+            System.out.println(ex.getMessage());
+
+        }
+        return k;
+    }
+    
     public void create(Kampanya c) {
         try {
             Statement st = this.getConnection().createStatement();
@@ -46,12 +61,27 @@ public class KampanyaDAO extends DBConnection{
 
         }
     }
-
-    public List<Kampanya> getList() {
-        List<Kampanya> list = new ArrayList<>();
+      public int count() {
+        int count = 0;
         try {
             Statement st = this.getConnection().createStatement();
-            String query = "select * from kampanya";
+            String query = "select count(id) as kampanya_count from kampanya";
+            ResultSet rs = st.executeQuery(query);
+            rs.next();
+            count = rs.getInt("kampanya_count");
+        } catch (Exception ex) {
+            System.out.println(ex.getMessage());
+
+        }
+        return count;
+    }
+
+    public List<Kampanya> getList(int page, int pageSize) {
+        List<Kampanya> list = new ArrayList<>();
+        int start = (page - 1) * pageSize;
+        try {
+            Statement st = this.getConnection().createStatement();
+            String query = "select * from kampanya order by id asc limit "+pageSize+" offset "+start;
             ResultSet rs = st.executeQuery(query);
             while (rs.next()) {
                 list.add(new Kampanya(rs.getInt("id"), rs.getString("isim"), rs.getString("bas_sure"), rs.getString("bit_sure")));

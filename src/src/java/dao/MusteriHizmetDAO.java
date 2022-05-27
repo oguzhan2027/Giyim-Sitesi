@@ -1,7 +1,4 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
+
 package dao;
 
 
@@ -66,12 +63,26 @@ public class MusteriHizmetDAO extends DBConnection {
 
         }
     }
-
-    public List<MusteriHizmet> getList() {
-        List<MusteriHizmet> list = new ArrayList<>();
+  public int count() {
+        int count = 0;
         try {
             Statement st = this.getConnection().createStatement();
-            String query = "select * from musteri_hizmet";
+            String query = "select count(id) as muhHiz_count from musteri_hizmet";
+            ResultSet rs = st.executeQuery(query);
+            rs.next();
+            count = rs.getInt("muhHiz_count");
+        } catch (Exception ex) {
+            System.out.println(ex.getMessage());
+
+        }
+        return count;
+    }
+    public List<MusteriHizmet> getList(int page, int pageSize) {
+        List<MusteriHizmet> list = new ArrayList<>();
+        int start = (page - 1) * pageSize;
+        try {
+            Statement st = this.getConnection().createStatement();
+            String query = "select * from musteri_hizmet order by id asc limit "+pageSize+" offset "+start;
             ResultSet rs = st.executeQuery(query);
             while (rs.next()) {
                 Magaza m = this.getMagazaDao().findByID(rs.getInt("magaza_id"));
