@@ -7,19 +7,36 @@
         <title>Yönetici</title>
     </h:head>
     <h:body>
-        <h:form>
-            <h:commandButton action="/index" value="Home"/>         
+        <h:form >
+            <h:commandButton action="/private" value="geri"/>       
         </h:form>
         <hr></hr>
         <h3>Yönetici Listesi</h3>
-        <h:form>
+        <h:form id="yonetici-form">
             Ad_Soyad:<h:inputText value="#{yoneticiBean.entity.adSoyad}"/><br/>
-            <h:commandButton rendered="#{yoneticiBean.entity.id==0}" action="#{yoneticiBean.create()}" value="Create"/>
-            <h:commandButton rendered="#{yoneticiBean.entity.id!=0}" action="#{yoneticiBean.update()}" value="Update"/>
-            <h:commandButton rendered="#{yoneticiBean.entity.id!=0}" action="#{yoneticiBean.clear()}" value="Clear"/>
+
+            <div class="form-group">
+                <div class="btn-group">
+                    <h:commandButton rendered="#{yoneticiBean.entity.id==0}" action="#{yoneticiBean.create()}" value="Create">
+                        <f:ajax execute="yonetici-form" render="yonetici-form yonetici-table"/>
+                    </h:commandButton>
+                    <h:commandButton rendered="#{yoneticiBean.entity.id!=0}" action="#{yoneticiBean.update()}" value="Update">
+                        <f:ajax execute="yonetici-form" render="yonetici-form yonetici-table"/>
+                    </h:commandButton>
+                    <h:commandButton rendered="#{yoneticiBean.entity.id!=0}" action="#{yoneticiBean.clear()}" value="Clear">
+                        <f:ajax execute="@this" render="yonetici-form"/>
+                    </h:commandButton>
+                </div> 
+            </div>
         </h:form>
         <hr />
-        <h:form>
+        <h:form id="yonetici-table">
+            <pre>Page #{yoneticiBean.page} of #{yoneticiBean.pageCount}</pre>
+            <div class="btn-group">
+                <h:commandButton action="#{yoneticiBean.previous()}" value="Previous"/>
+                <h:commandButton action="#{yoneticiBean.next()}" value="Next"/><br/><br/>
+
+            </div>
             <h:dataTable border="1" value="#{yoneticiBean.list}" var="entity">
                 <h:column>
                     <f:facet name="header">ID</f:facet>
@@ -30,11 +47,15 @@
                     <f:facet name="header">ADSOYAD</f:facet>
                         #{entity.adSoyad}
                 </h:column>
-                
+
                 <h:column>
                     <f:facet name="header">DÜZENLEMELER</f:facet>
-                    <h:commandButton action="#{yoneticiBean.delete(entity)}" value="SİL"/>
-                    <h:commandButton action="#{yoneticiBean.setEntity(entity)}" value="Güncelle"/>
+                    <h:commandButton action="#{yoneticiBean.delete(entity)}" value="SİL">
+                        <f:ajax execute="yonetici-form" render="yonetici-form yonetici-table"/>
+                    </h:commandButton>
+                    <h:commandButton action="#{yoneticiBean.setEntity(entity)}" value="Güncelle">
+                        <f:ajax execute="yonetici-form" render="yonetici-form yonetici-table"/>
+                    </h:commandButton>
                 </h:column>
 
             </h:dataTable>
