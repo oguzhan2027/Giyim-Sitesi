@@ -10,11 +10,11 @@
     </h:head>
     <h:body>
         <h:form>
-            <h:commandButton action="/index" value="Home"/>         
+            <h:commandButton action="/private" value="geri"/>         
         </h:form>
         <hr></hr>
         <h3>Urun Listesi</h3>
-        <h:form>
+        <h:form id="urunler-form">
             Kategoriler
             <h:selectOneMenu value="#{urunlerBean.entity.kategori}" converter="kategoriConverter">
                 <f:selectItems value="#{kategoriBean.list}" var="k" itemValue="#{k}" itemLabel="#{k.kategoriAd}"/>
@@ -31,12 +31,24 @@
             Ad:<h:inputText value="#{urunlerBean.entity.ad}"/><br/>
             Fiyat:<h:inputText value="#{urunlerBean.entity.fiyat}"/><br/>
 
-            <h:commandButton rendered="#{urunlerBean.entity.id==0}" action="#{urunlerBean.create()}" value="Create"/>
-            <h:commandButton rendered="#{urunlerBean.entity.id!=0}" action="#{urunlerBean.update()}" value="Update"/>
-            <h:commandButton rendered="#{urunlerBean.entity.id!=0}" action="#{urunlerBean.clear()}" value="Clear"/>
+            <h:commandButton rendered="#{urunlerBean.entity.id==0}" action="#{urunlerBean.create()}" value="Create">
+                <f:ajax execute="urunler-form" render="urunler-form urunler-table"/>
+            </h:commandButton>
+            <h:commandButton rendered="#{urunlerBean.entity.id!=0}" action="#{urunlerBean.update()}" value="Update">
+                <f:ajax execute="urunler-form" render="urunler-form urunler-table"/>
+            </h:commandButton>
+            <h:commandButton rendered="#{urunlerBean.entity.id!=0}" action="#{urunlerBean.clear()}" value="Clear">
+                <f:ajax execute="@this" render="urunler-form"/>
+            </h:commandButton>
         </h:form>
         <hr />
-        <h:form>
+        <h:form id="urunler-table">
+              <pre>Page #{urunlerBean.page} of #{urunlerBean.pageCount}</pre>
+            <div class="btn-group">
+                <h:commandButton action="#{urunlerBean.previous()}" value="Previous"/>
+                <h:commandButton action="#{urunlerBean.next()}" value="Next"/><br/><br/>
+
+            </div>
             <h:dataTable border="1" value="#{urunlerBean.list}" var="entity">
                 <h:column>
                     <f:facet name="header">ID</f:facet>
@@ -65,8 +77,12 @@
 
                 <h:column>
                     <f:facet name="header">DÜZENLEME</f:facet>
-                    <h:commandButton action="#{urunlerBean.delete(entity)}" value="SİL"/>
-                    <h:commandButton action="#{urunlerBean.setEntity(entity)}" value="Güncelle"/>
+                    <h:commandButton action="#{urunlerBean.delete(entity)}" value="SİL">
+                        <f:ajax execute="urunler-form" render="urunler-form urunler-table"/>
+                    </h:commandButton>
+                    <h:commandButton action="#{urunlerBean.setEntity(entity)}" value="Güncelle">
+                        <f:ajax execute="urunler-form" render="urunler-form urunler-table"/>
+                    </h:commandButton>
                 </h:column>
 
             </h:dataTable>
