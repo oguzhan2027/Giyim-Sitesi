@@ -1,7 +1,3 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package dao;
 
 import entity.Stok;
@@ -63,11 +59,27 @@ public class StokDAO extends DBConnection {
         }
     }
 
-    public List<Stok> getList() {
-        List<Stok> list = new ArrayList<>();
+    public int count() {
+        int count = 0;
         try {
             Statement st = this.getConnection().createStatement();
-            String query = "select * from stok";
+            String query = "select count(id) as stok_count from stok";
+            ResultSet rs = st.executeQuery(query);
+            rs.next();
+            count = rs.getInt("stok_count");
+        } catch (Exception ex) {
+            System.out.println(ex.getMessage());
+
+        }
+        return count;
+    }
+
+    public List<Stok> getList(int page, int pageSize) {
+        List<Stok> list = new ArrayList<>();
+        int start = (page - 1) * pageSize;
+        try {
+            Statement st = this.getConnection().createStatement();
+            String query = "select * from stok order by id asc limit " + pageSize + " offset " + start;
             ResultSet rs = st.executeQuery(query);
             while (rs.next()) {
                 list.add(new Stok(rs.getInt("id"), rs.getInt("stok_adet")));
