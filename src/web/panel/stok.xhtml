@@ -8,18 +8,30 @@
     </h:head>
     <h:body>
         <h:form>
-            <h:commandButton action="/index" value="Home"/>         
+            <h:commandButton action="/private" value="geri"/>        
         </h:form>
         <hr></hr>
         <h3>Stok Listesi</h3>
-        <h:form>
+        <h:form id="stok-form">
             Adet:<h:inputText value="#{stokBean.entity.adet}"/><br/>
-            <h:commandButton rendered="#{stokBean.entity.id==0}" action="#{stokBean.create()}" value="Create"/>
-            <h:commandButton rendered="#{stokBean.entity.id!=0}" action="#{stokBean.update()}" value="Update"/>
-            <h:commandButton rendered="#{stokBean.entity.id!=0}" action="#{stokBean.clear()}" value="Clear"/>
+            <h:commandButton rendered="#{stokBean.entity.id==0}" action="#{stokBean.create()}" value="Create">
+                <f:ajax execute="stok-form" render="stok-form stok-table"/>
+            </h:commandButton>
+            <h:commandButton rendered="#{stokBean.entity.id!=0}" action="#{stokBean.update()}" value="Update">
+                <f:ajax execute="stok-form" render="stok-form stok-table"/>
+            </h:commandButton>
+            <h:commandButton rendered="#{stokBean.entity.id!=0}" action="#{stokBean.clear()}" value="Clear">
+                <f:ajax execute="@this" render="stok-form"/>
+            </h:commandButton>
         </h:form>
         <hr />
-        <h:form>
+        <h:form id="stok-table">
+              <pre>Page #{stokBean.page} of #{stokBean.pageCount}</pre>
+            <div class="btn-group">
+                <h:commandButton action="#{stokBean.previous()}" value="Previous"/>
+                <h:commandButton action="#{stokBean.next()}" value="Next"/><br/><br/>
+
+            </div>
             <h:dataTable border="1" value="#{stokBean.list}" var="entity">
                 <h:column>
                     <f:facet name="header">ID</f:facet>
@@ -30,11 +42,15 @@
                     <f:facet name="header">ADET</f:facet>
                         #{entity.adet}
                 </h:column>
-                
+
                 <h:column>
                     <f:facet name="header">DÜZENLEMELER</f:facet>
-                    <h:commandButton action="#{stokBean.delete(entity)}" value="SİL"/>
-                    <h:commandButton action="#{stokBean.setEntity(entity)}" value="Güncelle"/>
+                    <h:commandButton action="#{stokBean.delete(entity)}" value="SİL">
+                        <f:ajax execute="stok-form" render="stok-form stok-table"/>
+                    </h:commandButton>
+                    <h:commandButton action="#{stokBean.setEntity(entity)}" value="Güncelle">
+                        <f:ajax execute="stok-form" render="stok-form stok-table"/>
+                    </h:commandButton>
                 </h:column>
 
             </h:dataTable>
