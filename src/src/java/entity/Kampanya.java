@@ -1,18 +1,20 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
+
 package entity;
 
 
 public class Kampanya {
-     private int id;
-   
+
+    private int id;
     private String isim;
     private String basSure;
     private String bitSure;
 
     public Kampanya() {
+    }
+
+    public Kampanya(int id, String isim) {
+        this.id = id;
+        this.isim = isim;
     }
 
     public Kampanya(int id, String isim, String basSure, String bitSure) {
@@ -21,8 +23,6 @@ public class Kampanya {
         this.basSure = basSure;
         this.bitSure = bitSure;
     }
-
-   
 
     public int getId() {
         return id;
@@ -56,7 +56,26 @@ public class Kampanya {
         this.bitSure = bitSure;
     }
 
-  
-    
+    @Override
+    public int hashCode() {
+        int hash = 7;
+        hash = 19 * hash + this.id;
+        return hash;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        final Kampanya other = (Kampanya) obj;
+        return this.id == other.id;
+    }
 
 }
