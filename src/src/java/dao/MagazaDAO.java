@@ -1,7 +1,4 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
+
 package dao;
 
 import entity.Yonetici;
@@ -65,12 +62,26 @@ public class MagazaDAO extends DBConnection {
 
         }
     }
-
-    public List<Magaza> getList() {
-        List<Magaza> list = new ArrayList<>();
+  public int count() {
+        int count = 0;
         try {
             Statement st = this.getConnection().createStatement();
-            String query = "select * from magaza";
+            String query = "select count(id) as magaza_count from magaza";
+            ResultSet rs = st.executeQuery(query);
+            rs.next();
+            count = rs.getInt("magaza_count");
+        } catch (Exception ex) {
+            System.out.println(ex.getMessage());
+
+        }
+        return count;
+    }
+    public List<Magaza> getList(int page, int pageSize) {
+        List<Magaza> list = new ArrayList<>();
+        int start = (page - 1) * pageSize;
+        try {
+            Statement st = this.getConnection().createStatement();
+            String query = "select * from magaza order by id asc limit "+pageSize+" offset "+start;
             ResultSet rs = st.executeQuery(query);
             while (rs.next()) {
                 Yonetici c = this.getYoneticiDao().findByID(rs.getInt("yonetici_id"));
