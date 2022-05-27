@@ -11,6 +11,9 @@ public class Uyeler {
     private String posta;
     private String telefon;
     private List<Urunler> urun;
+    private List<Urunler> urun1;
+    private List<Urunler> urun2;
+    private List<Kampanya> kam;
 
     public Uyeler() {
     }
@@ -20,16 +23,7 @@ public class Uyeler {
         this.adSoyad = adSoyad;
     }
 
-  /*  public Uyeler(int id, Magaza magaza, String adSoyad, String adres, String posta, String telefon) {
-        this.id = id;
-        this.magaza = magaza;
-        this.adSoyad = adSoyad;
-        this.adres = adres;
-        this.posta = posta;
-        this.telefon = telefon;
-    }*/
-
-    public Uyeler(int id, Magaza magaza, String adSoyad, String adres, String posta, String telefon, List<Urunler> urun) {
+    public Uyeler(int id, Magaza magaza, String adSoyad, String adres, String posta, String telefon, List<Urunler> urun, List<Urunler> urun1, List<Urunler> urun2, List<Kampanya> kam) {
         this.id = id;
         this.magaza = magaza;
         this.adSoyad = adSoyad;
@@ -37,6 +31,9 @@ public class Uyeler {
         this.posta = posta;
         this.telefon = telefon;
         this.urun = urun;
+        this.urun1 = urun1;
+        this.urun2 = urun2;
+        this.kam = kam;
     }
 
     public List<Urunler> getUrun() {
@@ -93,6 +90,30 @@ public class Uyeler {
 
     public void setTelefon(String telefon) {
         this.telefon = telefon;
+    }
+
+    public List<Urunler> getUrun1() {
+        return urun1;
+    }
+
+    public void setUrun1(List<Urunler> urun1) {
+        this.urun1 = urun1;
+    }
+
+    public List<Urunler> getUrun2() {
+        return urun2;
+    }
+
+    public void setUrun2(List<Urunler> urun2) {
+        this.urun2 = urun2;
+    }
+
+    public List<Kampanya> getKam() {
+        return kam;
+    }
+
+    public void setKam(List<Kampanya> kam) {
+        this.kam = kam;
     }
 
 }
