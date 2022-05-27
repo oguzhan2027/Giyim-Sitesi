@@ -1,51 +1,124 @@
 <?xml version='1.0' encoding='UTF-8' ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:h="http://xmlns.jcp.org/jsf/html"
-      xmlns:f="http://xmlns.jcp.org/jsf/core"
-      xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:f="http://xmlns.jcp.org/jsf/core"
+                xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                template="/template.xhtml">
 
-    <h:head>
+    <ui:define name="content">
 
-        <title>Uyeler</title>
-    </h:head>
-    <h:body>
-        <h:form>
-            <h:commandButton action="/index" value="Home"/>         
-        </h:form>
-        <hr></hr>
-        <h3>Uye Listesi</h3>
-        <h:form>
+        <h:form id="uyeler-form">
 
-            Magaza
-            <h:selectOneMenu value="#{uyelerBean.entity.magaza}" converter="magazaConverter">
-                <f:selectItems value="#{magazaBean.list}" var="c" itemValue="#{c}" itemLabel="#{c.ad}"/>
-            </h:selectOneMenu>
-            urunler
+            <div class="container mb-3">
+                <label class="form-label">Alışveriş Sayfası</label><br/><br/><br/>
+                <label class="form-label">Mağaza</label>
+                <h:selectOneMenu styleClass="form-select" value="#{uyelerBean.entity.magaza}" converter="magazaConverter">
+                    <f:selectItems value="#{magazaBean.list}" var="c" itemValue="#{c}" itemLabel="#{c.ad}"/>
+                </h:selectOneMenu>
+            </div>    
 
-            <h:selectManyMenu value="#{uyelerBean.entity.urun}" converter="urunlerConverter">
-                <f:selectItems value="#{urunlerBean.list}" var="c" itemValue="#{c}" itemLabel="#{c.ad}"/>
-            </h:selectManyMenu>
+            <div class="container mb-3">
+                <label class="form-label">Sepetteki Urunler</label>
+                <h:selectManyMenu  styleClass="form-select"  value="#{uyelerBean.entity.urun}" converter="urunlerConverter">
+                    <f:selectItems value="#{urunlerBean.list}" var="c" itemValue="#{c}" itemLabel="#{c.ad}"/>
+                </h:selectManyMenu>
+            </div>
             <br/>
-            AdSoyad:<h:inputText value="#{uyelerBean.entity.adSoyad}"/><br/>
-            Adres:<h:inputText value="#{uyelerBean.entity.adres}"/><br/>
-            e-posta:<h:inputText value="#{uyelerBean.entity.posta}"/><br/>
-            Telefon<h:inputText value="#{uyelerBean.entity.telefon}"/><br/>
-            <h:commandButton rendered="#{uyelerBean.entity.id==0}" action="#{uyelerBean.create()}" value="Create"/>
-            <h:commandButton rendered="#{uyelerBean.entity.id!=0}" action="#{uyelerBean.update()}" value="Update"/>
-            <h:commandButton rendered="#{uyelerBean.entity.id!=0}" action="#{uyelerBean.clear()}" value="Clear"/>
+
+            <div class="container mb-3">
+                <label class="form-label">Sipariş Urunler</label>
+                <h:selectManyMenu styleClass="form-select" value="#{uyelerBean.entity.urun1}" converter="urunlerConverter">
+                    <f:selectItems value="#{urunlerBean.list}" var="c" itemValue="#{c}" itemLabel="#{c.ad}"/>
+                </h:selectManyMenu>
+            </div>
+            <br/>
+
+            <div class="container mb-3">
+                <label class="form-label">Yorum</label>
+                <h:selectManyMenu styleClass="form-select" value="#{uyelerBean.entity.urun2}" converter="urunlerConverter">
+                    <f:selectItems value="#{urunlerBean.list}" var="c" itemValue="#{c}" itemLabel="#{c.ad}"/>
+                </h:selectManyMenu>
+            </div>
+            <br/>
+
+            <div class="container mb-3">
+                <label class="form-label">Kampanyalar</label>
+                <h:selectManyMenu value="#{uyelerBean.entity.kam}" converter="kampanyaConverter">
+                    <f:selectItems value="#{kampanyaBean.list}" var="c" itemValue="#{c}" itemLabel="#{c.isim}"/>
+                </h:selectManyMenu>
+            </div>
+            <br/>
+            <div class="container mb-3">
+                <label class="form-label">Ad-Soyad</label>
+                <h:inputText styleClass="form-control" value="#{uyelerBean.entity.adSoyad}"/><br/>
+            </div>
+            <div class="container mb-3">
+                <label class="form-label">Adres</label>
+                <h:inputText styleClass="form-control" value="#{uyelerBean.entity.adres}"/><br/>
+            </div>
+            <div class="container mb-3">
+                <label class="form-label">e-posta</label>
+                <h:inputText styleClass="form-control" value="#{uyelerBean.entity.posta}"/><br/>
+            </div>
+            <div class="container mb-3">
+                <label class="form-label">Telefon</label>
+                <h:inputText styleClass="form-control" value="#{uyelerBean.entity.telefon}"/><br/>
+            </div>
+            <h:commandButton styleClass="btn btn-success" rendered="#{uyelerBean.entity.id==0}" action="#{uyelerBean.create()}" value="Create">
+                <f:ajax execute="uyeler-form" render="uyeler-form uyeler-table"/>
+            </h:commandButton>
+            <h:commandButton styleClass="btn btn-primary" rendered="#{uyelerBean.entity.id!=0}" action="#{uyelerBean.update()}" value="Update">
+                <f:ajax execute="uyeler-form" render="uyeler-form uyeler-table"/>
+            </h:commandButton>
+            <h:commandButton styleClass="btn btn-secondary" rendered="#{uyelerBean.entity.id!=0}" action="#{uyelerBean.clear()}" value="Clear">
+                <f:ajax execute="@this" render="uyeler-form"/>
+            </h:commandButton>
         </h:form>
         <hr />
-        <h:form>
-            <h:dataTable border="1" value="#{uyelerBean.list}" var="entity">
+        <h:form id="uyeler-table">
+              <pre>Page #{uyelerBean.page} of #{uyelerBean.pageCount}</pre>
+            <div class="btn-group">
+                <h:commandButton action="#{uyelerBean.previous()}" value="Previous"/>
+                <h:commandButton action="#{uyelerBean.next()}" value="Next"/><br/><br/>
+
+            </div>
+            <h:dataTable  styleClass="table table-striped table-hover"  value="#{uyelerBean.list}" var="entity">
                 <h:column>
                     <f:facet name="header">ID</f:facet>
                         #{entity.id}
                 </h:column>
                 <h:column>
-                    <f:facet name="header">URUNLER</f:facet>
+                    <f:facet name="header">SepetURUNLER</f:facet>
                     <ul>
                         <ui:repeat value="#{entity.urun}" var="u">
+                            <li>#{u.ad}</li>
+                        </ui:repeat>
+                    </ul>
+
+                </h:column>
+                <h:column>
+                    <f:facet name="header">SiparisURUNLER</f:facet>
+                    <ul>
+                        <ui:repeat value="#{entity.urun1}" var="u">
+                            <li>#{u.ad}</li>
+                        </ui:repeat>
+                    </ul>
+
+                </h:column>
+                <h:column>
+                    <f:facet name="header">faydalanma</f:facet>
+                    <ul>
+                        <ui:repeat value="#{entity.kam}" var="u">
+                            <li>#{u.isim}</li>
+                        </ui:repeat>
+                    </ul>
+
+                </h:column>
+                <h:column>
+                    <f:facet name="header">YORUM</f:facet>
+                    <ul>
+                        <ui:repeat value="#{entity.urun2}" var="u">
                             <li>#{u.ad}</li>
                         </ui:repeat>
                     </ul>
@@ -74,11 +147,15 @@
 
                 <h:column>
                     <f:facet name="header">DÜZENLEME</f:facet>
-                    <h:commandButton action="#{uyelerBean.delete(entity)}" value="SİL"/>
-                    <h:commandButton action="#{uyelerBean.setEntity(entity)}" value="Güncelle"/>
+                    <h:commandButton styleClass="btn btn-danger btn-sm" action="#{uyelerBean.delete(entity)}" value="SİL">
+                        <f:ajax execute="uyeler-form" render="uyeler-form uyeler-table"/>
+                    </h:commandButton>
+                    <h:commandButton styleClass="btn btn-primary btn-sm" action="#{uyelerBean.setEntity(entity)}" value="Güncelle">
+                        <f:ajax execute="uyeler-form" render="uyeler-form uyeler-table"/>
+                    </h:commandButton>
                 </h:column>
 
             </h:dataTable>
         </h:form>
-    </h:body>
-</html>
+    </ui:define>
+</ui:composition>
