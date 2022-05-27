@@ -1,6 +1,4 @@
-
 package dao;
-
 
 import entity.Kategori;
 import entity.MusteriHizmet;
@@ -69,11 +67,27 @@ public class UrunlerDAO extends DBConnection {
         }
     }
 
-    public List<Urunler> getList() {
-        List<Urunler> list = new ArrayList<>();
+    public int count() {
+        int count = 0;
         try {
             Statement st = this.getConnection().createStatement();
-            String query = "select * from urunler";
+            String query = "select count(id) as urunler_count from urunler";
+            ResultSet rs = st.executeQuery(query);
+            rs.next();
+            count = rs.getInt("urunler_count");
+        } catch (Exception ex) {
+            System.out.println(ex.getMessage());
+
+        }
+        return count;
+    }
+
+    public List<Urunler> getList(int page, int pageSize) {
+        List<Urunler> list = new ArrayList<>();
+        int start = (page - 1) * pageSize;
+        try {
+            Statement st = this.getConnection().createStatement();
+            String query = "select * from urunler order by id asc limit " + pageSize + " offset " + start;
             ResultSet rs = st.executeQuery(query);
             while (rs.next()) {
                 Kategori k = this.getKategoriDao().findByID(rs.getInt("kategori_id"));

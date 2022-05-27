@@ -8,20 +8,32 @@
     </h:head>
     <h:body>
         <h:form>
-            <h:commandButton action="/index" value="Home"/>         
+            <h:commandButton action="/private" value="geri"/>  
         </h:form>
         <hr></hr>
         <h3>Kampanya Listesi</h3>
-        <h:form>
+        <h:form id="kampanya-form">
             isim:<h:inputText value="#{kampanyaBean.entity.isim}"/><br/>
             Baslama süresi:<h:inputText value="#{kampanyaBean.entity.basSure}"/><br/>
             Bitiş süresi:<h:inputText value="#{kampanyaBean.entity.bitSure}"/><br/>
-            <h:commandButton rendered="#{kampanyaBean.entity.id==0}" action="#{kampanyaBean.create()}" value="Create"/>
-            <h:commandButton rendered="#{kampanyaBean.entity.id!=0}" action="#{kampanyaBean.update()}" value="Update"/>
-            <h:commandButton rendered="#{kampanyaBean.entity.id!=0}" action="#{kampanyaBean.clear()}" value="Clear"/>
+            <h:commandButton rendered="#{kampanyaBean.entity.id==0}" action="#{kampanyaBean.create()}" value="Create">
+                <f:ajax execute="kampanya-form" render="kampanya-form kampanya-table"/>
+            </h:commandButton>
+            <h:commandButton rendered="#{kampanyaBean.entity.id!=0}" action="#{kampanyaBean.update()}" value="Update">
+                <f:ajax execute="kampanya-form" render="kampanya-form kampanya-table"/>
+            </h:commandButton>
+            <h:commandButton rendered="#{kampanyaBean.entity.id!=0}" action="#{kampanyaBean.clear()}" value="Clear">
+                <f:ajax execute="@this" render="kampanya-form"/>
+            </h:commandButton>
         </h:form>
         <hr />
-        <h:form>
+        <h:form id="kampanya-table">
+              <pre>Page #{kampanyaBean.page} of #{kampanyaBean.pageCount}</pre>
+            <div class="btn-group">
+                <h:commandButton action="#{kampanyaBean.previous()}" value="Previous"/>
+                <h:commandButton action="#{kampanyaBean.next()}" value="Next"/><br/><br/>
+
+            </div>
             <h:dataTable border="1" value="#{kampanyaBean.list}" var="entity">
                 <h:column>
                     <f:facet name="header">ID</f:facet>
@@ -42,8 +54,12 @@
                 </h:column>
                 <h:column>
                     <f:facet name="header">DÜZENLEMELER</f:facet>
-                    <h:commandButton action="#{kampanyaBean.delete(entity)}" value="SİL"/>
-                    <h:commandButton action="#{kampanyaBean.setEntity(entity)}" value="Güncelle"/>
+                    <h:commandButton action="#{kampanyaBean.delete(entity)}" value="SİL">
+                        <f:ajax execute="kampanya-form" render="kampanya-form kampanya-table"/>
+                    </h:commandButton>
+                    <h:commandButton action="#{kampanyaBean.setEntity(entity)}" value="Güncelle">
+                        <f:ajax execute="kampanya-form" render="kampanya-form kampanya-table"/>
+                    </h:commandButton>
                 </h:column>
 
             </h:dataTable>

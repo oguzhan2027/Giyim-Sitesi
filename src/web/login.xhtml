@@ -1,0 +1,40 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+    <h:head>
+        <title>Facelet Title</title>
+    </h:head>
+    <h:body>
+
+        <h1>Login page</h1> (yetkili kullanıcı erişim alanı:)
+        <hr/>
+        
+          <h:form rendered="#{validUser==null}" id="form">
+            Username:
+            <h:inputText id="uname" value="#{lc.user.username}" required="true" requiredMessage="Bu alan boş bırakılamaz!" >
+                <f:validateLength minimum="3" maximum="6"/>
+            </h:inputText><br/>
+            <h:message for="uname" style="color:red; font-size:10pt;"/><br/>
+            Password:<h:inputText id="pass" validator="#{testBean.validatePassword}" value="#{lc.user.password}"/><br/>
+            <h:message for="pass" style="color:red; font-size:10pt;"/><br/>
+            <h:commandButton action="#{lc.login()}" value="Login"/>
+        </h:form>
+        
+        
+       
+        <h:panelGroup rendered="#{validUser !=null}" layout="block">
+            Username: #{validUser.username}<br/>
+            Password: #{validUser.password}
+        </h:panelGroup>
+        <hr/>
+        <h:form>
+            <h:commandButton action="/index" value="Home"/>        
+            <h:commandButton action="/private?faces-redirect=true" value="Private"/>
+           
+        </h:form>
+        <hr/>
+        <h:messages></h:messages>
+    </h:body>
+</html>

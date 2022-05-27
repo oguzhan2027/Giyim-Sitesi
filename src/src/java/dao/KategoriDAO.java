@@ -62,12 +62,26 @@ public class KategoriDAO extends DBConnection {
 
         }
     }
-
-    public List<Kategori> getList() {
-        List<Kategori> list = new ArrayList<>();
+  public int count() {
+        int count = 0;
         try {
             Statement st = this.getConnection().createStatement();
-            String query = "select * from kategori";
+            String query = "select count(id) as kategori_count from kategori";
+            ResultSet rs = st.executeQuery(query);
+            rs.next();
+            count = rs.getInt("kategori_count");
+        } catch (Exception ex) {
+            System.out.println(ex.getMessage());
+
+        }
+        return count;
+    }
+    public List<Kategori> getList(int page, int pageSize) {
+        List<Kategori> list = new ArrayList<>();
+        int start = (page - 1) * pageSize;
+        try {
+            Statement st = this.getConnection().createStatement();
+            String query = "select * from kategori order by id asc limit "+pageSize+" offset "+start;
             ResultSet rs = st.executeQuery(query);
             while (rs.next()) {
                 list.add(new Kategori(rs.getInt("id"), rs.getString("ad")));
