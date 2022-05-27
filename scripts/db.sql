@@ -85,3 +85,10 @@ create table faydalanma(
 	constraint uyeler_fk foreign key (uyeler_id) references uyeler(id),
     constraint kampanya_fk foreign key (kampanya_id) references kampanya(id)
 );
+create table document(
+	id serial primary key,
+	filepath varchar,
+	filename varchar,
+	filetype varchar
+	
+);
