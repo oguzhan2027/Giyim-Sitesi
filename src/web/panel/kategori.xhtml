@@ -28,8 +28,12 @@
         <h:form id="kategori-table">
               <pre>Page #{kategoriBean.page} of #{kategoriBean.pageCount}</pre>
             <div class="btn-group">
-                <h:commandButton action="#{kategoriBean.previous()}" value="Previous"/>
-                <h:commandButton action="#{kategoriBean.next()}" value="Next"/><br/><br/>
+                <h:commandButton action="#{kategoriBean.previous()}" value="Previous">
+                <f:ajax execute="kategori-form" render="kategori-form kategori-table"/>
+            </h:commandButton>
+                <h:commandButton action="#{kategoriBean.next()}" value="Next">
+                <f:ajax execute="kategori-form" render="kategori-form kategori-table"/>
+            </h:commandButton><br/><br/>
 
             </div>
             <h:dataTable border="1" value="#{kategoriBean.list}" var="entity">
