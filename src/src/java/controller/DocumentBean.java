@@ -6,7 +6,6 @@ import jakarta.inject.Named;
 import jakarta.enterprise.context.SessionScoped;
 import jakarta.servlet.http.Part;
 import java.io.File;
-import java.io.IOException;
 import java.io.InputStream;
 import java.io.Serializable;
 import java.nio.file.Files;
@@ -19,15 +18,15 @@ public class DocumentBean implements Serializable {
     private Document document;
     private List<Document> documentList;
     private DocumentDAO documentDao;
-
+    private String documentName;
     private Part doc;
-    private final String uploadTo = "/Users/user/Desktop/resim/kopindir.jpg/";
+    private final String uploadTo = "/Users/user/Desktop/resim/kindir.jpg";
 
     public void upload() {
         try {
+
             InputStream input = doc.getInputStream();
-            File f = new File(uploadTo + doc.getSubmittedFileName());
-            
+            File f = new File(this.getUploadTo() + documentName + ".jpg");
             Files.copy(input, f.toPath());
 
             document = this.getDocument();
@@ -36,7 +35,8 @@ public class DocumentBean implements Serializable {
             document.setFileType(doc.getContentType());
 
             this.getDocumentDao().insert(document);
-        } catch (IOException e) {
+
+        } catch (Exception e) {
             System.out.println(e.getMessage());
         }
     }
@@ -46,6 +46,7 @@ public class DocumentBean implements Serializable {
     }
 
     public void setDoc(Part doc) {
+
         this.doc = doc;
     }
 

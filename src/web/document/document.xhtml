@@ -11,12 +11,12 @@
         <h:form enctype="multipart/form-data">
             <div class="form-group">
                 <label>File</label>
-                <h:inputFile value="#{documentBean.doc}" styleClass="custom-file"/>
+                <h:inputFile  value="#{documentBean.doc}" styleClass="custom-file" />
             </div>
             <h:commandButton action="#{documentBean.upload}" value="Upload" styleClass="btn btn-primary"/>
         </h:form>
 
-        <h:dataTable styleClass="table" value="#{documentControllerList}" var="d">
+        <h:dataTable styleClass="table" value="#{documentBean.documentList}" var="d">
             <h:column>
                 <f:facet name="header">ID</f:facet>
                     #{d.id}

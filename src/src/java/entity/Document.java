@@ -2,10 +2,10 @@ package entity;
 
 public class Document {
 
+    private Long id;
     private String filePath;
     private String fileName;
     private String fileType;
-    private Long id;
 
     public String getFilePath() {
         return filePath;
