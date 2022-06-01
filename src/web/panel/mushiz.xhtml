@@ -37,8 +37,12 @@
         <h:form id="mushiz-table">
               <pre>Page #{musteriHizmetBean.page} of #{musteriHizmetBean.pageCount}</pre>
             <div class="btn-group">
-                <h:commandButton action="#{musteriHizmetBean.previous()}" value="Previous"/>
-                <h:commandButton action="#{musteriHizmetBean.next()}" value="Next"/><br/><br/>
+                <h:commandButton action="#{musteriHizmetBean.previous()}" value="Previous">
+                <f:ajax execute="mushiz-form" render="mushiz-form mushiz-table"/>
+            </h:commandButton>
+                <h:commandButton action="#{musteriHizmetBean.next()}" value="Next">
+                <f:ajax execute="mushiz-form" render="mushiz-form mushiz-table"/>
+            </h:commandButton><br/><br/>
 
             </div>
             <h:dataTable border="1" value="#{musteriHizmetBean.list}" var="entity">
