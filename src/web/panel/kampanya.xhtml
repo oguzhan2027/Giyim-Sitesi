@@ -30,8 +30,12 @@
         <h:form id="kampanya-table">
               <pre>Page #{kampanyaBean.page} of #{kampanyaBean.pageCount}</pre>
             <div class="btn-group">
-                <h:commandButton action="#{kampanyaBean.previous()}" value="Previous"/>
-                <h:commandButton action="#{kampanyaBean.next()}" value="Next"/><br/><br/>
+                <h:commandButton action="#{kampanyaBean.previous()}" value="Previous">
+                <f:ajax execute="kampanya-form" render="kampanya-form kampanya-table"/>
+            </h:commandButton>
+                <h:commandButton action="#{kampanyaBean.next()}" value="Next">
+                <f:ajax execute="kampanya-form" render="kampanya-form kampanya-table"/>
+            </h:commandButton><br/><br/>
 
             </div>
             <h:dataTable border="1" value="#{kampanyaBean.list}" var="entity">
