@@ -45,8 +45,12 @@
         <h:form id="urunler-table">
               <pre>Page #{urunlerBean.page} of #{urunlerBean.pageCount}</pre>
             <div class="btn-group">
-                <h:commandButton action="#{urunlerBean.previous()}" value="Previous"/>
-                <h:commandButton action="#{urunlerBean.next()}" value="Next"/><br/><br/>
+                <h:commandButton action="#{urunlerBean.previous()}" value="Previous">
+                <f:ajax execute="urunler-form" render="urunler-form urunler-table"/>
+            </h:commandButton>
+                <h:commandButton action="#{urunlerBean.next()}" value="Next">
+                <f:ajax execute="urunler-form" render="urunler-form urunler-table"/>
+            </h:commandButton><br/><br/>
 
             </div>
             <h:dataTable border="1" value="#{urunlerBean.list}" var="entity">
