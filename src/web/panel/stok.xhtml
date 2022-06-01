@@ -28,8 +28,12 @@
         <h:form id="stok-table">
               <pre>Page #{stokBean.page} of #{stokBean.pageCount}</pre>
             <div class="btn-group">
-                <h:commandButton action="#{stokBean.previous()}" value="Previous"/>
-                <h:commandButton action="#{stokBean.next()}" value="Next"/><br/><br/>
+                <h:commandButton action="#{stokBean.previous()}" value="Previous">
+                <f:ajax execute="stok-form" render="stok-form stok-table"/>
+            </h:commandButton>
+                <h:commandButton action="#{stokBean.next()}" value="Next">
+                <f:ajax execute="stok-form" render="stok-form stok-table"/>
+            </h:commandButton><br/><br/>
 
             </div>
             <h:dataTable border="1" value="#{stokBean.list}" var="entity">
