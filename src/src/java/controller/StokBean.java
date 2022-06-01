@@ -121,3 +121,4 @@ public class StokBean implements Serializable {
         this.list = list;
     }
 }
+
