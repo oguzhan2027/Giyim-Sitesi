@@ -33,8 +33,12 @@
         <h:form id="yonetici-table">
             <pre>Page #{yoneticiBean.page} of #{yoneticiBean.pageCount}</pre>
             <div class="btn-group">
-                <h:commandButton action="#{yoneticiBean.previous()}" value="Previous"/>
-                <h:commandButton action="#{yoneticiBean.next()}" value="Next"/><br/><br/>
+                <h:commandButton action="#{yoneticiBean.previous()}" value="Previous">
+                        <f:ajax execute="yonetici-form" render="yonetici-form yonetici-table"/>
+                    </h:commandButton>
+                <h:commandButton action="#{yoneticiBean.next()}" value="Next">
+                        <f:ajax execute="yonetici-form" render="yonetici-form yonetici-table"/>
+                    </h:commandButton><br/><br/>
 
             </div>
             <h:dataTable border="1" value="#{yoneticiBean.list}" var="entity">
