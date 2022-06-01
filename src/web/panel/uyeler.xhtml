@@ -79,8 +79,12 @@
         <h:form id="uyeler-table">
               <pre>Page #{uyelerBean.page} of #{uyelerBean.pageCount}</pre>
             <div class="btn-group">
-                <h:commandButton action="#{uyelerBean.previous()}" value="Previous"/>
-                <h:commandButton action="#{uyelerBean.next()}" value="Next"/><br/><br/>
+                <h:commandButton action="#{uyelerBean.previous()}" value="Previous">
+                        <f:ajax execute="uyeler-form" render="uyeler-form uyeler-table"/>
+                    </h:commandButton>
+                <h:commandButton action="#{uyelerBean.next()}" value="Next">
+                        <f:ajax execute="uyeler-form" render="uyeler-form uyeler-table"/>
+                    </h:commandButton><br/><br/>
 
             </div>
             <h:dataTable  styleClass="table table-striped table-hover"  value="#{uyelerBean.list}" var="entity">
