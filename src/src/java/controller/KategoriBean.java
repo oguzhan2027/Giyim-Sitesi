@@ -117,3 +117,5 @@ public class KategoriBean implements Serializable {
         this.list = list;
     }
 }
+
+
