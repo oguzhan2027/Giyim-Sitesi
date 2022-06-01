@@ -6,10 +6,13 @@ import jakarta.enterprise.context.SessionScoped;
 import jakarta.faces.application.FacesMessage;
 import jakarta.faces.context.FacesContext;
 import java.io.Serializable;
+import java.sql.ResultSet;
+import java.sql.Statement;
+import util.DBConnection;
 
 @Named(value = "lc")
 @SessionScoped
-public class LoginController implements Serializable {
+public class LoginController extends DBConnection implements Serializable {
 
     private UserManager user;
 
@@ -17,12 +20,27 @@ public class LoginController implements Serializable {
     }
 
     public void login() {
+        try {
+            Statement st = this.getConnection().createStatement();
+            String query = "select * from yetkili";
+            ResultSet rs = st.executeQuery(query);
 
-        if (user.getUsername().equals("test") && user.getPassword().equals("123")) {
-            FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("validUser", user);
-        } else {
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Kullanıcı adı veya şifre hatalı girilmiştir!!!"));
+            while (rs.next()) {
+
+                if (user.getUsername().equals(rs.getString("ad")) && user.getPassword().equals(rs.getString("sifre"))) {
+                    FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("validUser", user);
+
+                } else {
+                    FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Kullanıcı adı ve şifre hatalı girilmiştir!!!"));
+
+                }
+            }
+
+        } catch (Exception ex) {
+            System.out.println(ex.getMessage());
+
         }
+
     }
 
     public UserManager getUser() {
