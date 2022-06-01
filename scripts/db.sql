@@ -92,3 +92,9 @@ create table document(
 	filetype varchar
 	
 );
+create table yetkili(
+    id serial primary key,
+	ad varchar,
+	sifre varchar
+
+);
