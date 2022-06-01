@@ -117,3 +117,4 @@ public class KampanyaBean implements Serializable {
         this.list = list;
     }
 }
+
