@@ -98,3 +98,4 @@ create table yetkili(
 	sifre varchar
 
 );
+insert into yetkili (ad,sifre) values ('test','123');
